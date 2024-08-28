@@ -5,15 +5,15 @@ import { useLottie } from "lottie-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { authService } from './../../services/auth.service'
+import { authService } from "./../../services/auth.service";
 import { setLocalStorage } from "../../utils/utils";
 import { useDispatch } from "react-redux";
 import { setValueUser } from "../../redux/authSlice";
 import { NotificationContext } from "../../App";
 const LoginPage = () => {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const { handleNotification } = useContext(NotificationContext)
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { handleNotification } = useContext(NotificationContext);
   const options = {
     animationData: signInAnimation,
     loop: true,
@@ -34,19 +34,22 @@ const LoginPage = () => {
       onSubmit: async (values) => {
         console.log(values);
         try {
-          const result = await authService.signIn(values)
-          console.log(result)
+          const result = await authService.signIn(values);
+          console.log(result);
           // B1 Lưu trữ dữ liệu xuống local
-          setLocalStorage("user", result.data.content)
-          dispatch(setValueUser(result.data.content))
+          setLocalStorage("user", result.data.content);
+          dispatch(setValueUser(result.data.content));
           // B2 Chuyển hướng người dùng
-          handleNotification("Đăng nhập thành công, bạn sẽ được chuyển hướng về trang chủ", "success")
+          handleNotification(
+            "Đăng nhập thành công, bạn sẽ được chuyển hướng về trang chủ",
+            "success"
+          );
           setTimeout(() => {
-            navigate("/")
-          }, 2000)
+            navigate("/");
+          }, 2000);
         } catch (error) {
-          console.log(error)
-          handleNotification(error.response.data.content, "error")
+          console.log(error);
+          handleNotification(error.response.data.content, "error");
         }
       },
       validationSchema: yup.object({
@@ -57,8 +60,7 @@ const LoginPage = () => {
         password: yup
           .string()
           .required("Vui lòng không bỏ trống")
-          .min(6, "Vui lòng nhập tối thiểu 6 ký tự")
-          .max(10, "Vui lòng nhập tối đa 10 ký tự"),
+          .min(6, "Vui lòng nhập tối thiểu 6 ký tự"),
       }),
     });
 
